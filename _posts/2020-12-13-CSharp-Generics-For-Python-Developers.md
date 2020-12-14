@@ -8,12 +8,12 @@ In this post I'll start with an example of how dynamically typed languages handl
 
 ## Collections in Python
 In Python if we want a list of strings it looks like this:
-```
+```python
 myStrings = ["a", "b", "c"]
 ```
 
 If we want a list of objects of some user-defined type it looks like this:
-```
+```python
 class Contact:
     def __init__(self, name, phone):
         self.Name = name
@@ -29,7 +29,7 @@ contactList = [
 ```
 
 All the items in each of the lists above happen to contain the same type of item, and often that is what you want.  However, Python itself does nothing to enforce this.  It is perfectly happy for you to do this:
-```
+```python
 contactList = [
     Contact("Alice", "111-555-1111"),
     ("Bob", "222-555-2222"),
@@ -41,7 +41,7 @@ contactList = [
 
 ## ArrayList in C#
 C# 1 didn't have Generics, but of course it still had collections.  One example is `ArrayList` (Note: the example does several other things that are not valid C# 1).  Using `ArrayList` looks a lot like using a Python list:
-```
+```c#
 var contactList = new ArrayList
 {
     new Contact("Alice", "111-555-1111"),
@@ -77,7 +77,7 @@ As a side note, `42` and `false` are not classes but they get implicitly "boxed"
 When we access the members of the collection, they are all just `object` instances, so we *only* have access to the members of the `object` class (at least without casting).
 
 So this compiles and runs:
-```
+```c#
 foreach (var contact in contactList)
 {
     Console.WriteLine($"{contact.ToString()} is type {contact.GetType()}");
@@ -85,7 +85,7 @@ foreach (var contact in contactList)
 ```
 
 But this fails to compile:
-```
+```c#
 foreach (var contact in contactList)
 {
     // Compile Error: object has no Name property
@@ -99,7 +99,7 @@ As another side note, just because I used `var` instead of explicitly writing th
 
 ## A similar error in Python
 The equivalent loop in Python will also fail, but at run-time.  It will actually not fail until after the 1st item in the list has already been printed successfully.
-```
+```python
 for contact in contactList:
     # Run-time Exception: Contact instance has no attribute Name
     print(contact.Name)
@@ -116,7 +116,7 @@ We will get to that soon, but first let's answer another question: We know we pu
 
 ## Getting our `Contact`s back
 The only way to get access to the `Contact` properties of the items we get out of `ArrayList` is to cast them.  Here is an example:
-```
+```c#
 foreach (var obj in contactList)
 {
     var contact = (Contact)obj;
@@ -133,7 +133,7 @@ So, there are two main problems with `ArrayList`:
 
 ## A strongly typed ArrayList wrapper
 If we want compile-time enforcement that an ArrayList only contains items of a particular type we can write a wrapper class.  A simple example would be:
-```
+```c#
 class ListOfContacts
 {
     private ArrayList _list;
@@ -149,7 +149,7 @@ class ListOfContacts
 The cast is still there, but since the only way to add items to the list is through the `Add` method that only accepts `Contact` items, we can be confident that the cast will always succeed at runtime.
 
 If we use that class to encapsulate our `ArrayList` then the compiler can prevent the wrong type of item from being inserted:
-```
+```c#
 var contactList = new ListOfContacts();
 contactList.Add(new Contact("Alice", "111-555-1111")); // works
 contactList.Add(("Bob", "222-555-2222")); // Won't compile
@@ -159,7 +159,7 @@ contactList.Add(false); // Won't compile
 ```
 
 In the following example, when we loop over the wrapper we are able to access the `Name` property because the indexer returns a `Contact`.
-```
+```c#
 for (var i = 0; i < contactList.Count; i++)
 {
     Console.WriteLine($"{contactList[i].Name}");
@@ -174,7 +174,7 @@ This gives you a type-safe collection, but imagine writing (and testing) that bo
 Essentially, generics make the C# compiler and the Common Language Runtime (CLR) work together to generate all that boilerplate code that was necessary for the type-safe solution so you don't have to!  Of course the code it generates will be more efficient and it doesn't really wrap `ArrayList`.  Also, note that when I say it "generates code" I mean that it is generated on the fly, it is not code that you will see as C# source code in your project.
 
 Using a generic list looks like this:
-```
+```c#
 var contactList = new List<Contact>();
 contactList.Add(new Contact("Alice", "111-555-1111")); // works
 contactList.Add(("Bob", "222-555-2222")); // Won't compile
@@ -184,7 +184,7 @@ contactList.Add(false); // Won't compile
 ```
 
 And you can `foreach` over it because it implements `IEnumerable<T>`:
-```
+```c#
 foreach (var contact in contactList)
 {
     Console.WriteLine($"{contact.Name}");
@@ -193,7 +193,7 @@ foreach (var contact in contactList)
 
 ## Implementing your own generic collection
 In order to demonstrate what a generic implementation looks like, let's see what our ArrayList wrapper would look like with Generics.  Of course, you wouldn't really use this code (because you'd just use `List<T>`), but this is a good example of what a generic class looks like.
-```
+```c#
 class ExampleList<T>
 {
     private ArrayList _list;
