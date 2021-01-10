@@ -4,7 +4,7 @@ title: C# Yield Return Demystified
 ---
 One C# language feature that can initially seem like magic is `yield return`.  This feature is very similar to generators in Python.  Generators (in Python) and `yield return` (in C#) allow you to write very simple-looking functions to implement behavior that normally would require more complex stateful iterator objects.  This post will explain the behavior of a function using `yield return` and then explain what code would be required to implement this behavior without `yield return`.
 
-# Implementing `IEnumerable<T>` with `yield return`
+## Implementing IEnumerable<T> with yield return
 Here is an example of a function that uses `yield return`:
 
 ```c#
@@ -45,7 +45,7 @@ item 8
 end (00:00:00.0002520 since begin)
 ```
 
-## Pausing and Resuming at `yield return`
+## Pausing and Resuming at yield return
 The thing that is interesting about this is the strings above are not built up into a collection in memory and _then_ iterated over, each item is produced only when it is needed.  When the `yield return` is encountered the function effectively pauses and the value from the `yield return` statement is produced as the next value in the enumeration.  Later, when the loop asks for the following value, the function resumes and runs until the following `yield return` is encountered.
 
 To prove that the function is paused and resumed like this you can add `Console.WriteLine` statements to the function like this to help demonstrate the order of execution:
@@ -176,7 +176,7 @@ The following values need to be persisted across pauses (`yield return`s) in the
 
 Note that `endTime` does not need maintained across any pauses of the method because it is introduced after the `yield return` in the loop and is not used again after the following `yield return`.
 
-## Manually Implementing `IEnumerator<T>`
+## Manually Implementing IEnumerator<T>
 The values that need to be maintained across pauses will become private fields in our `IEnumerator<T>` implementation.  We will also need one other private field that keeps track of _where_ within the method we are.  We will write this method as a state machine within the `IEnumerator<T>` implementation and this final private field will be the state of the state machine.
 
 Here is our `IEnumerator<T>` implementation commented with explanations of what is going on.  Don't worry if you don't follow it fully.  The main point is that it is a state machine and that this code is difficult and error prone to write by hand.
