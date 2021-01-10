@@ -288,4 +288,3 @@ As you can see, it is possible to manually write code that is equivalent to a fu
 
 If you are interested to read in more depth about the code the compiler generates and to understand how it handles things like exception handling and finally blocks, I would recommend reading Section 2.4 of the book "C# In Depth (Fourth Edition)" by Jon Skeet.
 
-If you found this post interesting you may also like my post about [C# generics]({% post_url 2020-12-13-CSharp-Generics-For-Python-Developers.md %}).
