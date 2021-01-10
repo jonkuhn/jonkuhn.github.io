@@ -7,7 +7,7 @@ One C# language feature that can initially seem like magic is `yield return`.  T
 # Implementing `IEnumerable<T>` with `yield return`
 Here is an example of a function that uses `yield return`:
 
-```C#
+```c#
 IEnumerable<string> YieldReturnDemo(int first, int last)
 {
     var beginTime = DateTime.UtcNow;
@@ -25,7 +25,7 @@ IEnumerable<string> YieldReturnDemo(int first, int last)
 
 As you can see this function returns an `IEnumerable<string>` which means it can be used in a `foreach` loop like this:
 
-```C#
+```c#
 foreach (var s in YieldReturnDemo(2, 8))
 {
     Console.WriteLine(s);
@@ -50,7 +50,7 @@ The thing that is interesting about this is the strings above are not built up i
 
 To prove that the function is paused and resumed like this you can add `Console.WriteLine` statements to the function like this to help demonstrate the order of execution:
 
-```C#
+```c#
 foreach (var s in YieldReturnDemo(2, 8))
 {
     Console.WriteLine(s);
@@ -119,7 +119,7 @@ For translating our `yield return` function into a manual implementation of `IEn
 
 The following simple implementation of `IEnumerable<T>` can be used for our purposes:
 
-```C#
+```c#
 class StateMachineEnumerable : IEnumerable<string>
 {
     int _first;
@@ -152,7 +152,7 @@ The more interesting part of manually implementing the equivalent of the `YieldR
 
 Let's take another look at `YieldReturnDemo` and note the state that needs to be kept track of while the function is paused:
 
-```C#
+```c#
 IEnumerable<string> YieldReturnDemo(int first, int last)
 {
     var beginTime = DateTime.UtcNow;
@@ -181,7 +181,7 @@ The values that need to be maintained across pauses will become private fields i
 
 Here is our `IEnumerator<T>` implementation commented with explanations of what is going on.  Don't worry if you don't follow it fully.  The main point is that it is a state machine and that this code is difficult and error prone to write by hand.
 
-```C#
+```c#
 class StateMachineEnumerator : IEnumerator<string>
 {
     // State variable for our state machine
@@ -288,3 +288,4 @@ As you can see, it is possible to manually write code that is equivalent to a fu
 
 If you are interested to read in more depth about the code the compiler generates and to understand how it handles things like exception handling and finally blocks, I would recommend reading Section 2.4 of the book "C# In Depth (Fourth Edition)" by Jon Skeet.
 
+If you found this post interesting you may also like my post about [C# generics]({% post_url 2020-12-13-CSharp-Generics-For-Python-Developers %}).
