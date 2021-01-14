@@ -147,7 +147,7 @@ This effectively just takes the two arguments that our `YieldReturnDemo` functio
 
 You can mostly ignore the non-generic `IEnumerable.GetEnumerator()`, it is just a passthrough to the generic implementation.  It is required due to `IEnumerable<T>` implementing `IEnumerable` which existed before generics were added to C#.
 
-## What State Needs To Be Preserve In Our `IEnumerator<T>`?
+## What State Needs To Be Preserved In Our `IEnumerator<T>`?
 The more interesting part of manually implementing the equivalent of the `YieldReturnDemo` function is the `IEnumerator<T>` implementation.  This is where we will manually keep track of the state between steps of the enumeration.
 
 Let's take another look at `YieldReturnDemo` and note the state that needs to be kept track of while the function is paused:
