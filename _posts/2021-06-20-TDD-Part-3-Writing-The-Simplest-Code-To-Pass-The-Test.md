@@ -50,9 +50,7 @@ public async Task CheckoutBookAsync(string memberId, string isbn)
 }
 ```
 
-> **Note for folks not familiar with NSubstitute**
->
-> I am using NSubstitute in my examples and it will not fail the test if the setup `GetOutstandingBookLoansForMemberAsync` call is not received.  NSubstitute goes beyond the mocks simply being non-strict (ignoring calls that are not set up).  It will also not fail tests if a call that _was_ set up is not received.  This is because it is designed to be used with tests that follow the Arrange/Act/Assert pattern.  It only fails tests if it doesn't receive calls that you explicitly ask it to verify using `Received()` checks.  I like this approach because I think it makes it easier to write tests that are not brittle.  However, a deeper discussion of the pros and cons of this approach is yet another idea for a future blog post.  
+**Note for folks not familiar with NSubstitute:** I am using NSubstitute in my examples and it will not fail the test if the setup `GetOutstandingBookLoansForMemberAsync` call is not received.  NSubstitute goes beyond the mocks simply being non-strict by ignoring calls that are not set up.  It will also not fail tests if a call that _was_ set up is not received.  This is because it is designed to be used with tests that follow the Arrange/Act/Assert pattern.  It only fails tests if it doesn't receive calls that you explicitly ask it to verify using `Received()` checks.  I like this approach because I think it makes it easier to write tests that are not brittle.  However, a deeper discussion of the pros and cons of this approach is yet another idea for a future blog post.  
 
 I think it was useful for me to make the test pass with this "silly" hardcoded throw, because it demonstrates that my test suite is not yet proving anything about the exception ever _not_ being thrown.  This helps lead me to the next test to write.  TDD sessions generally get into a loop like this where it is obvious what test to write next.
 
@@ -92,7 +90,7 @@ public async Task CheckoutBookAsync(string memberId, string isbn)
 I think a good guideline is to only do “unconditionally silly” implementations.  By this I mean to not wrap any silly hardcoded implementations inside of if/else conditionals that are not necessary for implementing the requirements.  The above code violates this rule.  Another way I sometimes think about it is that the unit tests are doing their job if they make incorrect implementations so ugly they would easily raise flags in code review.
 
 ## Another interesting lesson from a silly implementation
-However, I'd like to give one more example where doing something silly in the implementation demonstrates something interesting about the tests.  I could also write the following implementation code to pass the tests.  This code is wrong because of the hardcoded `"test-member-id"`, but the tests will pass.  Doing this does actually demonstrate something interesting about the test suite:  The test coverage around the argument being passed to `GetOutstandingBookLoansForMemberAsync` could still be better.
+I'd like to give one more example where doing something silly in the implementation demonstrates something interesting about the tests.  I could also write the following implementation code to pass the tests.  This code is wrong because of the hardcoded `"test-member-id"`, but the tests will pass.  Doing this does actually demonstrate something interesting about the test suite:  The test coverage around the argument being passed to `GetOutstandingBookLoansForMemberAsync` could still be better.
 
 (If you are wondering why the tests pass even though the second test sets up the mock for `"test-member-id2"` and not `"test-member-id"`, read on.  I explain this later.)
 

@@ -10,14 +10,14 @@ Posts in this series:
 - [TDD Part 3 - Writing The Simplest Code To Pass The Test]({% post_url 2021-06-20-TDD-Part-3-Writing-The-Simplest-Code-To-Pass-The-Test %})
 
 ## The first test you write is not set in stone
-When doing TDD, the first test is often the hardest test to write.  My advice is to make it super simple and build on it.  The first test you write is not likely to survive unmodified into your final test suite.  This is okay.  TDD is an iterative process.  Once I get through a couple iterations of the write test, implement, repeat loop I find that starts to be easy to know what to do next.  The trick is just to get started.
+When doing TDD, the first test is often the hardest test to write.  My advice is to make it super simple and build on it.  The first test you write is not likely to survive unmodified into your final test suite.  This is okay.  TDD is an iterative process.  Once I get through a couple iterations of the "write a test, implement, repeat" loop I find that it becomies easier to know what to do next.  The trick is just to get started.
 
 I recently created a [TDD Example repo](https://github.com/jonkuhn/TddExample) on Github to draw examples from for my blog posts on TDD and Unit testing.
 
 For my TDD example repo I wrote the business logic for checking out a book from a library that has the following requirements:
 - If checking out another book would put the member over the maximum number of checked out books, do not allow the book to be checked out.
 - If the member has past due books, do not allow the book to be checked out.
-- Record a copy of the book as checked out by the member.
+- If all other checks pass, record a copy of the book as checked out by the member.
 - If no copy of the book is still available, the member cannot check out the book.
 - If a copy of the book was successfully checked out, call out to a reminder service that will remind the member when the book is due.
 
@@ -84,7 +84,7 @@ public void TestCheckoutBookAsync_GivenMemberOverBookLimit_ThrowsTooManyCheckedO
 }
 ```
 
-As you can see, the test above adds the setup of the situation where too many books are already checked out by a member by stubbing out the response to the `GetOutstandingBookLoansForMemberAsync` method on the repository.  Given the way NSubstitute mocks work, this test will still pass if the implementation unconditionally throws.  How to make the tests fail for such an implementation is the subject of the [next post in this series]({% post_url 2021-06-20-TDD-Part-3-Writing-The-Simplest-Code-To-Pass-The-Test %}).  For now the point is just to see how slowly a test case can be built up when getting started with TDD.
+As you can see, the test above adds the setup of the situation where too many books are already checked out by a member by stubbing out the response to the `GetOutstandingBookLoansForMemberAsync` method on the repository.  Given the way NSubstitute mocks work, this test will still pass if the implementation unconditionally throws.  The [next post in this series]({% post_url 2021-06-20-TDD-Part-3-Writing-The-Simplest-Code-To-Pass-The-Test %}) will focus on how to make the tests fail for such an implementation.  For now, the point is just to see how a test case can be slowly built up when getting started with TDD.
 
 The final version of this test in my TDD example repository looked like this:
 
