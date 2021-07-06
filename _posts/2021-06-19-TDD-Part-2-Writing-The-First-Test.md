@@ -118,4 +118,4 @@ If you liked this post, please check out the other posts in this 3 part series:
 - TDD Part 2 - Writing The First Test (you are here)
 - [TDD Part 3 - Writing The Simplest Code To Pass The Test]({% post_url 2021-06-20-TDD-Part-3-Writing-The-Simplest-Code-To-Pass-The-Test %})
 
-If you are looking to read more about Unit Testing I highly recommend Roy Osherov’s book “The Art Of Unit Testing”.  This book helped shape my thinking on the subject.
+If you are looking to read more about Unit Testing I highly recommend Roy Osherove’s book “The Art Of Unit Testing”.  This book helped shape my thinking on the subject.
